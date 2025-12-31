@@ -50,29 +50,33 @@ Este repositório é **exclusivamente analítico** e **não realiza treinamento,
 ```bash
 edge-vision-eda/
 ├── config/
-│   └── settings.py             # Configurações e paths do projeto
+│   └── settings.py                            # Configurações e paths do projeto
 │
 ├── core/
-│   ├── dataset_loader.py       # Leitura do dataset externo
-│   ├── metrics.py              # Cálculo de métricas estatísticas agregadas
-│   └── validator.py            # Validação estrutural dos dados
+│   ├── dataset_loader.py                      # Leitura do dataset externo
+│   ├── metrics.py                             # Cálculo de métricas estatísticas agregadas
+│   └── validator.py                           # Validação estrutural dos dados
 │
 ├── viz/
-│   └── plots.py                # Geração de gráficos do EDA
+│   └── plots.py                               # Geração de gráficos do EDA
 │
 ├── artifacts/
-│   ├── metrics/                # CSVs de métricas
-│   └── plots/                  # Gráficos gerados
+│   ├── metrics/                               # CSVs de métricas
+│   └── plots/                                 # Gráficos gerados
 │
 ├── logs/
 │   └── edge-vision-eda_2025-12-31.log
 │
 ├── utils/
-│   └── logging_global.py       # Logging global do sistema
+│   └── logging_global.py                      # Logging global do sistema
 │
-├── main.py                     # Orquestração do pipeline de EDA
-├── requirements.txt            # Dependências
-└── README.md                   # Documentação
+├── main.py                                    # Orquestração do pipeline de EDA 
+│
+├── documentação_técnica_edge-vision-eda.pdf   # Documentação Técnica
+│
+├── requirements.txt                           # Dependências
+│
+└── README.md                                  # Documentação
 ```
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
