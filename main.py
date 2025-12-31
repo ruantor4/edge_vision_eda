@@ -13,7 +13,14 @@ Ele é apenas um teste inicial para validar configuração.
 """
 
 import logging
-from config.settings import DATASET_DIR, DATASET_SPLITS, IMAGES_DIRNAME, LABELS_DIRNAME, ROOT_DIR
+from config.settings import (
+    DATASET_DIR, 
+    DATASET_SPLITS, 
+    IMAGES_DIRNAME, 
+    LABELS_DIRNAME, 
+    ROOT_DIR
+)
+from core.validator import validade_dataset
 from utils.logging_global import setup_logging
 
 def main() -> None:
@@ -53,7 +60,6 @@ def main() -> None:
 
     # TESTE 2 – Verificar se o DATASET_DIR existe
     try:
-
         logger.info(f"DATASET_DIR: {DATASET_DIR}")
         logger.info(f"DATASET_DIR existe? {DATASET_DIR.exists()}")
 
@@ -77,22 +83,41 @@ def main() -> None:
             print(f"SPLIT: {split}")
             
             # Caminho da pasta de imagens
-            images_path = DATASET_DIR / split / IMAGES_DIRNAME
+            images_dir = DATASET_DIR / split / IMAGES_DIRNAME
 
             # Caminho da pasta de labels
-            labels_path = DATASET_DIR / split / LABELS_DIRNAME
+            labels_dir = DATASET_DIR / split / LABELS_DIRNAME
 
             # Verificamos se essas pastas existem no sistema
-            if not images_path.exists():
-                logger.warning(f"Pasta de imagens não encontrada: {images_path}")
-
-            if not labels_path.exists():
-                logger.warning(f"Pasta de labels não encontrada: {labels_path}")
+            if not images_dir.exists():
+                logger.warning(f"Pasta de imagens não encontrada: {images_dir}")
+            
+            if not labels_dir.exists():
+                logger.warning(f"Pasta de labels não encontrada: {labels_dir}")
 
     except Exception as e:
         logger.error("Erro ao verificar estrutura do dataset por split:", exc_info=e)
         return
+    
+    # TESTE 4 – Validar dataset (validator)
+    try:
+        logger.info("Iniciando validação do dataset")
+        
+        validation_report = validade_dataset()
 
+        for split, issues in validation_report.items():
+            logger.info(f"Resumo do split: {split}")
+            logger.info(
+                f" Imagens negativas (sem label): {len(issues['images_without_labels'])}"
+            )
+            logger.info(
+                f" Labels inválidos: {len(issues['invalid_labels'])}"
+            )
+
+    except Exception as e:
+        logger.error("Erro ao validar o dataset:", exc_info=e)
+        return
+    
     logger.info("Todos os testes concluídos com sucesso.")
 
 if __name__ == "__main__":
