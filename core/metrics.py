@@ -19,7 +19,8 @@ from typing import List, Set, Tuple
 
 from config.settings import (
     ARTIFACTS_METRICS_DIR, 
-    DATASET_DIR, 
+    DATASET_DIR,
+    DATASET_METRICS_PATH, 
     DATASET_SPLITS, 
     LABELS_DIRNAME
 ) 
@@ -176,7 +177,7 @@ def save_metrics_csv(metrics: List[Tuple[str, str, object]]) -> None:
 
     Assume que o diretório já existe.
     """
-    output_path = ARTIFACTS_METRICS_DIR / "dataset_metrics.csv"
+    output_path = DATASET_METRICS_PATH
 
     try:
         with open(output_path, "w", newline="") as csv_file:
