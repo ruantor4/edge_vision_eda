@@ -31,23 +31,37 @@ def main() -> None:
     """
 
     # ETAPA 0 – Inicializar logging
-    setup_logging()
-
-    logger = logging.getLogger(__name__)
+    try:
+        setup_logging()
+        logger = logging.getLogger(__name__)
     
-    logger.info("Iniciando edge-vision-eda")
-    logger.info("Testando configuração inicial")
+        logger.info("Iniciando edge-vision-eda")
+        logger.info("Testando configuração inicial")
     
+    except Exception as e:
+        print("Erro ao configurar o logging:", e)
+        return
 
     # TESTE 1 – Verificar se o ROOT_DIR está correto
-    logger.info(f"ROOT_DIR: {ROOT_DIR}")
+    try:
+        logger.info(f"ROOT_DIR: {ROOT_DIR}")
+
+    except Exception as e:
+        logger.error("Erro ao acessar ROOT_DIR:", exc_info=e)
+        return
 
 
     # TESTE 2 – Verificar se o DATASET_DIR existe
-    logger.info(f"DATASET_DIR: {DATASET_DIR}")
-    logger.info(f"DATASET_DIR existe? {DATASET_DIR.exists()}")
+    try:
 
-    logger.info("Teste finalizado.")
+        logger.info(f"DATASET_DIR: {DATASET_DIR}")
+        logger.info(f"DATASET_DIR existe? {DATASET_DIR.exists()}")
+
+        logger.info("Teste finalizado.")
+
+    except Exception as e:
+        logger.error("Erro ao acessar DATASET_DIR:", exc_info=e)
+        return
 
     # TESTE 3 – Verificar estrutura do dataset por split
     """
@@ -58,31 +72,32 @@ def main() -> None:
     - pasta images/
     - pasta labels/
     """
-    for split in DATASET_SPLITS:
-        print(f"SPLIT: {split}")
-        
-        # Caminho da pasta de imagens
-        images_path = DATASET_DIR / split / IMAGES_DIRNAME
+    try:
+        for split in DATASET_SPLITS:
+            print(f"SPLIT: {split}")
+            
+            # Caminho da pasta de imagens
+            images_path = DATASET_DIR / split / IMAGES_DIRNAME
 
-        # Caminho da pasta de labels
-        labels_path = DATASET_DIR / split / LABELS_DIRNAME
+            # Caminho da pasta de labels
+            labels_path = DATASET_DIR / split / LABELS_DIRNAME
 
-        # Verificamos se essas pastas existem no sistema
-        print("  Images path:", images_path)
-        print("  Existe?", images_path.exists())
+            # Verificamos se essas pastas existem no sistema
+            if not images_path.exists():
+                logger.warning(f"Pasta de imagens não encontrada: {images_path}")
 
-        print("  Labels path:", labels_path)
-        print("  Existe?", labels_path.exists())
+            if not labels_path.exists():
+                logger.warning(f"Pasta de labels não encontrada: {labels_path}")
 
-        print("-" * 50)
+    except Exception as e:
+        logger.error("Erro ao verificar estrutura do dataset por split:", exc_info=e)
+        return
 
+    logger.info("Todos os testes concluídos com sucesso.")
 
 if __name__ == "__main__":
     """
-    Esta condição verifica se o arquivo main.py está sendo executado
-    diretamente (python main.py) ou se está sendo importado como um módulo
-    em outro arquivo.
-
-    Se estiver sendo executado diretamente, chamamos a função main().
+    Este bloco garante que a função main() só seja executada
+    quando este arquivo for rodado diretamente.
     """
     main()
