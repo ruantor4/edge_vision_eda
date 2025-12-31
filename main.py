@@ -13,14 +13,17 @@ Ele é apenas um teste inicial para validar configuração.
 """
 
 import logging
+from core.metrics import compute_dataset_metrics, save_metrics_csv
+from core.validator import validate_dataset
 from config.settings import (
-    DATASET_DIR, 
-    DATASET_SPLITS, 
-    IMAGES_DIRNAME, 
-    LABELS_DIRNAME, 
-    ROOT_DIR
+    ROOT_DIR,
+    DATASET_DIR,
+    DATASET_SPLITS,
+    IMAGES_DIRNAME,
+    LABELS_DIRNAME,
+    ARTIFACTS_METRICS_DIR
 )
-from core.validator import validade_dataset
+
 from utils.logging_global import setup_logging
 
 def main() -> None:
@@ -103,7 +106,7 @@ def main() -> None:
     try:
         logger.info("Iniciando validação do dataset")
         
-        validation_report = validade_dataset()
+        validation_report = validate_dataset()
 
         for split, issues in validation_report.items():
             logger.info(f"Resumo do split: {split}")
@@ -113,9 +116,32 @@ def main() -> None:
             logger.info(
                 f" Labels inválidos: {len(issues['invalid_labels'])}"
             )
+    
 
     except Exception as e:
         logger.error("Erro ao validar o dataset:", exc_info=e)
+        return
+    
+    # TESTE 5 – Preparar diretório de métricas
+    try:
+        logger.info("Garantindo diretório de métricas")
+        ARTIFACTS_METRICS_DIR.mkdir(parents=True, exist_ok=True)
+
+    except Exception as e:
+        logger.error("Erro ao criar diretório de métricas", exc_info=e)
+        return
+    
+    # TESTE 6 – Calcular e salvar métricas do dataset
+    try:
+        logger.info("Calculando métricas exploratórias do dataset")
+
+        metrics = compute_dataset_metrics()
+        save_metrics_csv(metrics)
+
+        logger.info("Métricas calculadas e salvas em CSV.")
+
+    except Exception as e:
+        logger.error("Erro ao calcular ou salvar métricas do dataset:", exc_info=e)
         return
     
     logger.info("Todos os testes concluídos com sucesso.")

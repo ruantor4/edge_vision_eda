@@ -24,7 +24,7 @@ DATASET_DIR = ROOT_DIR.parent / "dataset_original"
 DATASET_SPLITS = ("train", "valid", "test")
 
 
-# ESTURUTURA DO DATASET
+# ESTRUTURA DO DATASET
 IMAGES_DIRNAME = "images"
 LABELS_DIRNAME = "labels"
 
