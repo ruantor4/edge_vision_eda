@@ -12,7 +12,9 @@ Este main NÃO é o pipeline final.
 Ele é apenas um teste inicial para validar configuração.
 """
 
+import logging
 from config.settings import DATASET_DIR, DATASET_SPLITS, IMAGES_DIRNAME, LABELS_DIRNAME, ROOT_DIR
+from utils.logging_global import setup_logging
 
 def main() -> None:
     """
@@ -28,18 +30,24 @@ def main() -> None:
     - refatoração depois
     """
 
-    # Teste simples para garantir que o settings.py está funcionando
+    # ETAPA 0 – Inicializar logging
+    setup_logging()
+
+    logger = logging.getLogger(__name__)
+    
+    logger.info("Iniciando edge-vision-eda")
+    logger.info("Testando configuração inicial")
+    
 
     # TESTE 1 – Verificar se o ROOT_DIR está correto
-    print("ROOT_DIR:")
-    print(ROOT_DIR)
-    print("-" * 50)
+    logger.info(f"ROOT_DIR: {ROOT_DIR}")
+
 
     # TESTE 2 – Verificar se o DATASET_DIR existe
-    print("DATASET_DIR:")
-    print(DATASET_DIR)
-    print("Existe?", DATASET_DIR.exists())
-    print("-" * 50)
+    logger.info(f"DATASET_DIR: {DATASET_DIR}")
+    logger.info(f"DATASET_DIR existe? {DATASET_DIR.exists()}")
+
+    logger.info("Teste finalizado.")
 
     # TESTE 3 – Verificar estrutura do dataset por split
     """
